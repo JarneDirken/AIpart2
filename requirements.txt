@@ -1,0 +1,6 @@
+simpleai
+streamlit
+ucimlrepo
+numpy
+pandas
+sklearn
