@@ -1,5 +1,4 @@
 simpleai
 streamlit
 ucimlrepo
-sklearn.tree
-sklearn
+DecisionTreeClassifier
