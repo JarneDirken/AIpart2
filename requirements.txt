@@ -1,6 +1,5 @@
 simpleai
 streamlit
 ucimlrepo
-numpy
-pandas
+sklearn.tree
 sklearn
