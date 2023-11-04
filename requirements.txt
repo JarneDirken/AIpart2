@@ -1,4 +1,4 @@
 simpleai
 streamlit
 ucimlrepo
-DecisionTreeClassifier
+scikit-learn
