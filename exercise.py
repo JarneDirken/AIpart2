@@ -1,10 +1,9 @@
 import streamlit as st
 import numpy as np
-import pandas as pd
 from ucimlrepo import fetch_ucirepo
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from sklearn.metrics import confusion_matrix
@@ -16,42 +15,33 @@ wine = fetch_ucirepo(id=109)
 X = wine.data.features  # Features
 y = wine.data.targets  # Target variable
 
-# Get a list of feature column names
-feature_cols = list(X.columns.values)
-
-# Verify the number of unique classes in the target variable
-num_classes = len(np.unique(y))
-
-# Define class names based on the number of unique classes
-class_names = [str(i) for i in range(num_classes)]
-
 # Split data into training set and test set
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)  # 70% training, 30% testing
 
 # Streamlit app
-st.title("Machine Learning App")
+st.title("Machine Learning Model Comparison")
 
 # Sidebar with options
-model_option = st.sidebar.selectbox("Select a Model", ["Decision Tree", "SVM", "Random Forest"])
+model_option = st.sidebar.selectbox("Select a Model", ["Random Forest", "SVM", "K-Nearest Neighbors (KNN)"])
 if model_option == "Random Forest":
     n_estimators = st.sidebar.slider("Number of Trees", 1, 100, 10)
 
 # Create and evaluate the selected model
-if model_option == "Decision Tree":
-    st.header("Decision Tree")
+if model_option == "Random Forest":
+    st.header("Random Forest")
 
-    # Create a Decision Tree classifier and fit it to the data (TRAIN DATA)
-    clf = DecisionTreeClassifier(criterion="entropy")
+    # Create a Random Forest classifier and fit it to the data (TRAIN DATA)
+    clf = RandomForestClassifier(n_estimators=n_estimators)
     clf = clf.fit(X_train, y_train)
 
-    # Make predictions with Decision Tree
+    # Make predictions with Random Forest
     y_pred = clf.predict(X_test)
 
-    # Print Decision Tree accuracy
+    # Print Random Forest accuracy
     accuracy = metrics.accuracy_score(y_test, y_pred)
     st.write("Accuracy:", accuracy)
 
-    # Calculate the Decision Tree confusion matrix
+    # Calculate the Random Forest confusion matrix
     conf_matrix = confusion_matrix(y_test, y_pred)
     st.write("Confusion Matrix:")
     st.write(conf_matrix)
@@ -75,21 +65,21 @@ if model_option == "SVM":
     st.write("Confusion Matrix:")
     st.write(conf_matrix)
 
-if model_option == "Random Forest":
-    st.header("Random Forest")
+if model_option == "K-Nearest Neighbors (KNN)":
+    st.header("K-Nearest Neighbors (KNN)")
 
-    # Create a Random Forest classifier and fit it to the data (TRAIN DATA)
-    clf = RandomForestClassifier(n_estimators=n_estimators)
+    # Create a K-Nearest Neighbors (KNN) classifier and fit it to the data (TRAIN DATA)
+    clf = KNeighborsClassifier(n_neighbors=5)  # You can specify the number of neighbors
     clf = clf.fit(X_train, y_train)
 
-    # Make predictions with Random Forest
+    # Make predictions with KNN
     y_pred = clf.predict(X_test)
 
-    # Print Random Forest accuracy
+    # Print KNN accuracy
     accuracy = metrics.accuracy_score(y_test, y_pred)
     st.write("Accuracy:", accuracy)
 
-    # Calculate the Random Forest confusion matrix
+    # Calculate the KNN confusion matrix
     conf_matrix = confusion_matrix(y_test, y_pred)
     st.write("Confusion Matrix:")
     st.write(conf_matrix)
